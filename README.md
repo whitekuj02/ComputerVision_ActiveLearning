@@ -3,6 +3,7 @@
 # 파일 소개
 
 /Dataset/CUB2011.py Dataset module 데이터를 불러올 때 처리하는 module
+
 /result gradCam.py에서 나온 결과값들을 저장 ( test 셋 각각에 대한 마지막 layer의 gradCAM 사진과 예측이 맞았는지에 대한 여부를 파일명으로 확인 가능)
 
 base_code.py, hj.py hj2.py jione.py Seung_min_chung.py 각 팀원들이 실험해본 .py 파일 (최고기록이 아닐 수 있음.)
