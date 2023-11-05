@@ -3,9 +3,12 @@
 The goal is to solve the fine-grained image classification train the model using hyperparameter tuning, data augmentation, etc. 
 
 Dataset : CUB-200-2011(Caltech-UCSD Birds-200-2011)
+
 MODEL: resnet18
+
 Augmentation : RandomHorizontalFlip, Random Rotation(30), Gaussian Blur
-Best score=94.63
+
+### Best score=94.63
 
 
 # 파일 소개
