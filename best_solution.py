@@ -18,7 +18,7 @@ from albumentations.pytorch import ToTensorV2
 from Dataset.CUB2011 import CUB2011
 import wandb
 
-#원활한 비교를 위해 시드 고정
+#Fix seeds for smooth comparisons
 torch.manual_seed(42)
 
 #adam  + randomVerticalFlip + 1e-4
@@ -26,12 +26,12 @@ torch.manual_seed(42)
 # start a new wandb run to track this script
 wandb.init(
     # set the wandb project where this run will be logged
-    project="CV_Active_1", # 프로젝트 명은 그대로
-    name = "SGD + 증강3개(호리즌탈, 로테, 가우시안)따로 (jione) + 얼리스탑", # 매 실험마다 이름 바꾸어주기
+    project="CV_Active_1", 
+    name = "SGD + 증강3개(호리즌탈, 로테, 가우시안)따로", #Rename every experiment
 
     # track hyperparameters and run metadata
     config={
-    "learning_rate": 0.1, # 이건 조금 줄여서 세심하게 탐사 해봐야 할 듯
+    "learning_rate": 0.1, 
     "architecture": "ResNet18",
     "dataset": "CUB2011",
     "augmentation": "RandomHorizontalFlip + andomRotation(30) + GaussianBlur(kernel_size=5) ",
@@ -45,7 +45,7 @@ USE_CUDA = torch.cuda.is_available()
 DEVICE = torch.device("cuda" if USE_CUDA else "cpu")
 print(DEVICE)
     
-# augmentation 하면 될 듯
+#data augmentation
 transforms_train = transforms.Compose([
     transforms.Resize((448, 448)), 
     transforms.ToTensor(),
@@ -68,14 +68,13 @@ aug_train3 = transforms.Compose([
     transforms.GaussianBlur(kernel_size=5),
     transforms.ToTensor()
 ])
-
-# val, test는 augmentation 하지 않음
+# val, test does not augment
 transforms_valtest = transforms.Compose([
     transforms.Resize((448, 448)), 
     transforms.ToTensor(),
 ])
 
-# augmentation 늘어날 수록 batch 수도 늘려서 32 기준 5.5 Gb / 24Gb 정도
+# augmentation As the number of batches increases, so does the number of batches, which is about 5.5 Gb / 24 Gb for 32
 BATCH_SIZE = 32
 
 train_set = CUB2011(mode='train',
@@ -103,13 +102,13 @@ print("Loaded dataloader")
 
 ### Model / Optimzier ###
 
-# 실제 parameter 조정은 여기서
+# # The actual parameter adjustment is done here
 EPOCH = 30 
 lr = 0.1
 
 model = models.resnet18(weights=models.ResNet18_Weights.DEFAULT)
 ### Transfer Learning ###
-# pre-train된 resnet 뒤에 fc 50개 짜리로 바꾸어서 50개의 class에 대한 classification을 할 수 있도록 함
+# replace the pre-trained resnet with 50 fc's to allow classification for 50 classes
 num_features = model.fc.in_features
 model.fc = nn.Linear(num_features, 50)
 model.to(DEVICE)
@@ -157,16 +156,16 @@ def evaluate(model, val_loader):
 
 start = time.time()
 best = 0
-early_stop = 0
-patience = 5
+#early_stop = 0
+#patience = 5
 
 for epoch in range(EPOCH):
     # early_stop
-    if early_stop > patience:
-        print(f"early_stop epochs : {epoch}")
-        break
+    #if early_stop > patience:
+    #    print(f"early_stop epochs : {epoch}")
+    #    break
     
-    # 각 에폭마다 따로 학습을 하고 테스트를 하고 다시 이어서 학습
+    # # train, test, and repeat for each epoch separately
     train_loss = train(model, train_loader, optimizer, epoch)
     val_loss, val_accuracy = evaluate(model, val_loader)
 
@@ -176,9 +175,9 @@ for epoch in range(EPOCH):
     if val_accuracy > best : 
         best = val_accuracy
         torch.save(model.state_dict(), "./best_model.pth")
-        early_stop = 0
-    else:
-        early_stop += 1
+    #   early_stop = 0
+    #else:
+    #    early_stop += 1
         
     print(f'[{epoch} Validation Loss : {val_loss:.4f}, Accuracy: {val_accuracy:.4f}%]')
 

@@ -34,7 +34,7 @@ model.to(DEVICE)
 
 # 사전 훈련된 가중치를 로드합니다.
 # 'map_location'을 사용하여 가중치를 CPU 또는 GPU로 로드할 수 있습니다.
-state_dict = torch.load("./best_model.pth", map_location='cpu')
+state_dict = torch.load("./best_model_94.295.pth", map_location='cpu')
 model.load_state_dict(state_dict)
 
 # val, test는 augmentation 하지 않음
