@@ -8,7 +8,9 @@
 
 base_code.py, hj.py hj2.py jione.py Seung_min_chung.py 각 팀원들이 실험해본 .py 파일 (최고기록이 아닐 수 있음.)
 
-best_solution.py 가장 높게 정확도가 나온 코드 중 하나
+best_solution.py best_solution2.py 가장 높게 정확도가 나온 코드 중 하나
+
+code_.py base_code by ppt
 
 best_model.pth 실험 결과의 weight를 저장함
 
