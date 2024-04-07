@@ -1,4 +1,4 @@
-# CV_Active_1
+# Computer vision active learning
 ## Computer Vison Active learning #1
 The goal is to solve the fine-grained image classification train the model using hyperparameter tuning, data augmentation, etc. 
 
